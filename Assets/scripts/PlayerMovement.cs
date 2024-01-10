@@ -5,27 +5,32 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField, Range(1, 10)]
-    float speed = 5;
+    float speed = 5; // den vanliga hastigheten
 
-    float liveSpeed;
+    float liveSpeed; // hastigheten som används i movment
 
     [SerializeField, Range(1, 10)]
-    float crouchSpeed = 5;
+    float crouchSpeed = 5; // hastigheten när man crouchar
 
     [SerializeField, Range(1, 100)]
-    float jumpForce = 5;
+    float jumpForce = 5; // kraften man hoppar med
+
+    [SerializeField, Range(0.01f, 1f)]
+    float coyoteTime = 0.05f; // hur länge innan man förlorar sitt hopp efter spelarn slutar nudda marken
 
     [SerializeField]
-    BoxCollider2D crouchCollider;
-
-    bool crounching = false;
-
-    public int facingRight;
-    public LayerMask mask;
-    bool airJump;
-    public bool WallForward;
+    BoxCollider2D crouchCollider; // collidern som ska disableas när man crouchar
 
     Rigidbody2D rb2D;
+
+    float inputX;
+
+    bool crouching = false;
+
+    public LayerMask groundMask; // layermasken för marken
+
+    bool airJump; // om man kan hoppa
+
 
     void Start()
     {
@@ -42,30 +47,18 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // om spelaren är på marken ska man kunna röra sig på detta sättet
+        // uppdaterar inputX med inputen i horizontella riktningen
+        inputX = Input.GetAxisRaw("Horizontal");
+
+        // om spelaren är på marken ska spelaren röra sig snabbare och tätare annars ska den ändra hastighet långsamt
         if (GroundCheck())
         {
-            // när D knappen trycks ned rörs spelaren åt höger
-            if (Input.GetKey(KeyCode.D))
-            {
-                facingRight = 1;
-                rb2D.velocity = new Vector2(liveSpeed, rb2D.velocity.y);
-            }
-            // när A knappen trycks ned rörs spelaren åt vänster
-            else if (Input.GetKey(KeyCode.A))
-            {
-                facingRight = -1;
-                rb2D.velocity = new Vector2(-liveSpeed, rb2D.velocity.y);
-            }
-            // om inget trycks ned så stannar spelarn
-            else
-            {
-                rb2D.velocity = new Vector2(0, rb2D.velocity.y);
-            }
+            rb2D.velocity = new Vector2(liveSpeed * inputX, rb2D.velocity.y);
         }
-        else
+        // kollar så spelaren bara accelererar när den är under hur snabbt man går på marken
+        else if (rb2D.velocity.x < inputX * speed)
         {
-            rb2D.AddForce(new Vector2(speed * 0.1f, 0), ForceMode2D.Force);
+            rb2D.AddForce(new Vector2(speed * 0.2f * inputX, 0), ForceMode2D.Force);
         }
         
         // kollar om W trycks ned
@@ -82,19 +75,22 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
+        // när vänster ctrl trycks ned och man inte är crouchar under ett tak så byter den crouch boolen till motsatta
         if (Input.GetKeyDown(KeyCode.LeftControl) && !CelingCheck())
         {
-            crounching = !crounching;
+            crouching = !crouching;
         }
 
-        if (crounching)
+        // när crouching är true disableas crouchCollider som är den övre collidern och liveSpeed byts till crouchSpeed som är långsammare
+        if (crouching)
         {
-            crouchCollider.isTrigger = true;
+            crouchCollider.enabled = false;
             liveSpeed = crouchSpeed;
         }
+        // ändrar tillbaka allt när crouching är false
         else
         {
-            crouchCollider.isTrigger = false;
+            crouchCollider.enabled = true;
             liveSpeed = speed;
         }
 
@@ -109,7 +105,7 @@ public class PlayerMovement : MonoBehaviour
     bool GroundCheck()
     {
         // skapar en raycast som börjar i spelaren, åker neråt och kollar om den träffar något i Floor layer och sparar detta i en hit varibael
-        RaycastHit2D hit = Physics2D.CircleCast(transform.position - new Vector3(0, 0.95f, 0), 0.15f, -Vector2.up, 1f, mask);
+        RaycastHit2D hit = Physics2D.CircleCast(transform.position - new Vector3(0, 0.95f, 0), 0.15f, -Vector2.up, 1f, groundMask);
 
         // om raycasten har träffat någontig och punkten där den träffa är mindre än 0.6 units från spelaren
         if (hit.transform != null && hit.distance < 0.025F)
@@ -127,7 +123,7 @@ public class PlayerMovement : MonoBehaviour
 
     bool CelingCheck()
     {
-        RaycastHit2D[] hit = Physics2D.BoxCastAll(transform.position + new Vector3(0, 0.5f, 0), new Vector2(0.9f, 1), 0, Vector2.up, 0, mask);
+        RaycastHit2D[] hit = Physics2D.BoxCastAll(transform.position + new Vector3(0, 0.5f, 0), new Vector2(0.9f, 1), 0, Vector2.up, 0, groundMask);
 
         foreach (RaycastHit2D item in hit)
         {
@@ -142,7 +138,7 @@ public class PlayerMovement : MonoBehaviour
 
     bool WallCheck()
     {
-        RaycastHit2D[] hit = Physics2D.BoxCastAll(transform.position + new Vector3(0.01f * facingRight, 0, 0), new Vector2(1f, 1.9f), 0, Vector2.up);
+        RaycastHit2D[] hit = Physics2D.BoxCastAll(transform.position + new Vector3(0.01f * inputX, 0, 0), new Vector2(1f, 1.9f), 0, Vector2.up);
 
         foreach (RaycastHit2D item in hit)
         {
@@ -161,7 +157,7 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(transform.position + new Vector3(0, 0.5f, 0), new Vector2(0.9f, 1));
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(transform.position + new Vector3(0.01f * facingRight, 0, 0), new Vector2(1.1f, 1.9f));
+        Gizmos.DrawWireCube(transform.position + new Vector3(0.01f * inputX, 0, 0), new Vector2(1.1f, 1.9f));
 
     }
 }
