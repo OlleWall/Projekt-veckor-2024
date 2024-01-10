@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField, Range(1, 15)]
+    float runningSpeed = 10;
+
     [SerializeField, Range(1, 10)]
     float speed = 5; // den vanliga hastigheten
 
@@ -80,6 +83,15 @@ public class PlayerMovement : MonoBehaviour
         // bara när man inte klätrar ska man kunna göra dessa saker
         if (!climbing)
         {
+            if (Input.GetKey(KeyCode.LeftShift) && !crouching)
+            {
+                liveSpeed = runningSpeed;
+            }
+            else if (!crouching)
+            {
+                liveSpeed = speed;
+            }
+
             // om spelaren är på marken ska spelaren röra sig snabbare och tätare annars ska den ändra hastighet långsamt
             if (GroundCheck())
             {
