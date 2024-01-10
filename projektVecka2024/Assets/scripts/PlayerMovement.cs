@@ -29,51 +29,55 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        //hämtar rigidbody componenten
+        // hämtar rigidbody componenten
         rb2D = GetComponent<Rigidbody2D>();
 
+        // hämtar boxcollidern som då är den övre
         crouchCollider = GetComponent<BoxCollider2D>();
 
+        // definerar livespeed
         liveSpeed = speed;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //om rör spelaren åt höger när D knappen trycks ner och spelaren dashar inte
-        if (Input.GetKey(KeyCode.D))
+        // om spelaren är på marken ska man kunna röra sig på detta sättet
+        if (GroundCheck())
         {
-            facingRight = 1;
-            if (WallForward == false)
+            // när D knappen trycks ned rörs spelaren åt höger
+            if (Input.GetKey(KeyCode.D))
+            {
+                facingRight = 1;
+                rb2D.velocity = new Vector2(liveSpeed, rb2D.velocity.y);
+            }
+            // när A knappen trycks ned rörs spelaren åt vänster
+            else if (Input.GetKey(KeyCode.A))
+            {
+                facingRight = -1;
+                rb2D.velocity = new Vector2(-liveSpeed, rb2D.velocity.y);
+            }
+            // om inget trycks ned så stannar spelarn
+            else
             {
                 rb2D.velocity = new Vector2(0, rb2D.velocity.y);
-                transform.eulerAngles = new Vector3(0, 0, 0);
-                transform.position += new Vector3(liveSpeed, 0, 0) * Time.deltaTime;
             }
         }
-
-        //om rör spelaren åt vänster när A trycks ner, spelaren dashar inte och kollar om spelaren är mer än -10 units.x från 0
-        if (Input.GetKey(KeyCode.A) && transform.position.x > -10)
+        else
         {
-            facingRight = -1;
-            if (WallForward == false)
-            {
-                rb2D.velocity = new Vector2(0, rb2D.velocity.y);
-                transform.eulerAngles = new Vector3(0, 180, 0);
-                transform.position -= new Vector3(liveSpeed, 0, 0) * Time.deltaTime;
-            }
+            rb2D.AddForce(new Vector2(speed * 0.1f, 0), ForceMode2D.Force);
         }
-
-        //kollar om W trycks ned
+        
+        // kollar om W trycks ned
         if (Input.GetKey(KeyCode.W))
         {
-            //kollar om spelaren inte redan har hoppat sedan man nuddade marken, det var 0.15 sekunder sedan man hoppa och om spelaren inte flyter
+            // kollar om spelaren inte redan har hoppat sedan man nuddade marken, det var 0.15 sekunder sedan man hoppa och om spelaren inte flyter
             if (airJump == true)
             {
-                //stannar spelaren på y axeln och trycker upp spelaren
+                // stannar spelaren på y axeln och trycker upp spelaren
                 rb2D.velocity = new Vector2(rb2D.velocity.x, 0);
                 rb2D.velocity = new Vector2(rb2D.velocity.x, jumpForce);
-                //säger att man har hoppat i luften
+                // säger att man har hoppat i luften
                 airJump = false;
             }
         }
@@ -94,29 +98,29 @@ public class PlayerMovement : MonoBehaviour
             liveSpeed = speed;
         }
 
-        //kollar functionen GroundCheck och får ett true false värde tillbaka
+        // kollar functionen GroundCheck och får ett true false värde tillbaka
         if (GroundCheck())
         {
-            //säger att spelaren kan hoppa
+            // säger att spelaren kan hoppa
             airJump = true;
         }
     }
 
     bool GroundCheck()
     {
-        //skapar en raycast som börjar i spelaren, åker neråt och kollar om den träffar något i Floor layer och sparar detta i en hit varibael
+        // skapar en raycast som börjar i spelaren, åker neråt och kollar om den träffar något i Floor layer och sparar detta i en hit varibael
         RaycastHit2D hit = Physics2D.CircleCast(transform.position - new Vector3(0, 0.95f, 0), 0.15f, -Vector2.up, 1f, mask);
 
-        //om raycasten har träffat någontig och punkten där den träffa är mindre än 0.6 units från spelaren
+        // om raycasten har träffat någontig och punkten där den träffa är mindre än 0.6 units från spelaren
         if (hit.transform != null && hit.distance < 0.025F)
         {
-            //sickar den true
+            // skickar den true
             return true;
         }
-        //om det inte är sant
+        // om det inte är sant
         else
         {
-            //sickar den false
+            // skickar den false
             return false;
         }
     }
@@ -136,9 +140,28 @@ public class PlayerMovement : MonoBehaviour
         return false;
     }
 
+    bool WallCheck()
+    {
+        RaycastHit2D[] hit = Physics2D.BoxCastAll(transform.position + new Vector3(0.01f * facingRight, 0, 0), new Vector2(1f, 1.9f), 0, Vector2.up);
+
+        foreach (RaycastHit2D item in hit)
+        {
+            if (item.collider.gameObject.layer != gameObject.layer)
+            {
+                print(item.collider.gameObject.layer);
+                return true;
+            }
+        }
+        print("hello");
+        return false;
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(transform.position + new Vector3(0, 0.5f, 0), new Vector2(0.9f, 1));
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(transform.position + new Vector3(0.01f * facingRight, 0, 0), new Vector2(1.1f, 1.9f));
+
     }
 }
