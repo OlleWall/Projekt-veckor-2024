@@ -17,7 +17,7 @@ public class MainMenu : MonoBehaviour
 
     public void CreditScreen()
     {
-        SceneManager.LoadScene("NEXT-SCENE-3");
+        SceneManager.LoadScene("Credits");
     }
     public void QuitGame()
     {
