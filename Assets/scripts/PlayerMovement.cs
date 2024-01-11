@@ -15,6 +15,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Range(1, 10)]
     float crouchSpeed = 5; // hastigheten när man crouchar
 
+    [SerializeField, Range(0, 10)]
+    float climbingSpeed = 3; // hastigheten när man klätrar
+
     [SerializeField, Range(1, 100)]
     float jumpForce = 5; // kraften man hoppar med
 
@@ -40,10 +43,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     LayerMask ladderMask; // layermasken för stegar
 
-    public bool climbing = false;
-
-    [SerializeField, Range(0, 10)]
-    float climbingSpeed = 3; // hastigheten när man klätrar
+    bool climbing = false;
 
     int facingRight;
 
