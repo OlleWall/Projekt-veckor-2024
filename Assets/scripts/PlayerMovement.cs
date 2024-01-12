@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Olle
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField, Range(1, 15)]
@@ -16,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     float crouchSpeed = 5; // hastigheten när man crouchar
 
     [SerializeField, Range(0, 10)]
-    float climbingSpeed = 3; // hastigheten när man klätrar
+    float climbingSpeed = 3; // hastigheten när man klättrar
 
     [SerializeField, Range(1, 100)]
     float jumpForce = 5; // kraften man hoppar med
@@ -45,9 +46,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     LayerMask ladderMask; // layermasken för stegar
 
+    public bool canInteract; // om san ska något visas att spelaren kan interacta med något typ text över huvudet
+
     bool climbing = false;
 
-    int facingRight;
+    int facingRight; // 1 = kollar höger -1 = vänster
 
     float gravity;
 
@@ -105,7 +108,7 @@ public class PlayerMovement : MonoBehaviour
             facingRight = -1;
         }
 
-        // bara när man inte klätrar ska man kunna göra dessa saker
+        // bara när man inte klättrar ska man kunna göra dessa saker
         if (!climbing)
         {
             if (Input.GetKey(KeyCode.LeftShift) && !crouching)
@@ -146,11 +149,15 @@ public class PlayerMovement : MonoBehaviour
             {
                 crouching = !crouching;
             }
-        }       
+        }
+        // om man klättrar
         else
         {
             crouching = false;
 
+            canInteract = false;
+
+            // om man trycker på W ska man åka upp om S åker man ned annars står man still
             if (Input.GetKey(KeyCode.W))
             {
                 rb2D.velocity = new Vector2(0, climbingSpeed);
@@ -165,9 +172,10 @@ public class PlayerMovement : MonoBehaviour
             }
 
             // när man trycker på space, d eller a så ska man hoppa av åt de hållet man kollar
-            if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.A))
             {
                 rb2D.velocity = new Vector2(speed * facingRight, jumpForce);
+                rb2D.gravityScale = gravity;
                 climbing = false;
             }
             // när man slutar nudda stegen så hoppar man fram och upp
@@ -215,11 +223,14 @@ public class PlayerMovement : MonoBehaviour
 
         if (ladder != null)
         {
+            // ska visa att om spelaren trycker på E börjar den klättra på stegen
+            if (!climbing)
+            {
+                canInteract = true;
+            }    
 
-            // visa att om spelaren trycker på E börjar den klätra på stegen
-
-            // bara om spelaren trycker på E ska den börja klätra
-            if (Input.GetKeyDown(KeyCode.E))
+            // bara om spelaren trycker på E ska den börja klättra
+            if (canInteract && Input.GetKeyDown(KeyCode.E))
             {
                 transform.position = new Vector3(ladder.transform.position.x, transform.position.y, transform.position.z);
                 climbing = true;
@@ -228,6 +239,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
+            canInteract = false;
             climbing = false;
             rb2D.gravityScale = gravity;
         }
