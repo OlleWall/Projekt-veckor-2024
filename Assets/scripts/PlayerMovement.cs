@@ -21,6 +21,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Range(1, 100)]
     float jumpForce = 5; // kraften man hoppar med
 
+    [SerializeField, Range(0, 1)]
+    float airSpeedMultiplier = 0.3f;
+
     [SerializeField, Range(0.01f, 1f)]
     float coyoteTime = 0.05f; // hur länge innan man förlorar sitt hopp efter spelarn slutar nudda marken
 
@@ -123,7 +126,7 @@ public class PlayerMovement : MonoBehaviour
             // kollar så spelaren bara accelererar när den är under hur snabbt man går på marken
             else if (rb2D.velocity.x < inputX * speed)
             {
-                rb2D.AddForce(new Vector2(speed * 0.2f * inputX, 0), ForceMode2D.Force);
+                rb2D.AddForce(new Vector2(speed * airSpeedMultiplier * inputX, 0), ForceMode2D.Force);
             }
 
             // kollar om W eller space trycks ned
