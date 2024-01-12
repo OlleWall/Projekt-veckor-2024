@@ -12,12 +12,17 @@ public class MainMenu : MonoBehaviour
 
     public void OptionScreen()
     {
-        SceneManager.LoadScene("NEXT-SCENE-2");
+        SceneManager.LoadScene("Options");
     }
 
     public void CreditScreen()
     {
         SceneManager.LoadScene("Credits");
+    }
+
+    public void BackButtons()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
     public void QuitGame()
     {
