@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField, Range(1, 15)]
-    float runningSpeed = 10;
+    float runningSpeed = 10; // hastigheten när man springer
 
     [SerializeField, Range(1, 10)]
     float speed = 5; // den vanliga hastigheten
@@ -48,6 +48,24 @@ public class PlayerMovement : MonoBehaviour
     int facingRight;
 
     float gravity;
+
+    [SerializeField]
+    Vector3 celingCheckOffsett = new Vector3(0, 0.5f, 0);
+
+    [SerializeField]
+    Vector2 celingCheckSize = new Vector2(0.9f, 1);
+
+    [SerializeField]
+    Vector3 groundCheckOffsett = new Vector3(0, 0.95f, 0);
+
+    [SerializeField]
+    Vector2 groundCheckSize = new Vector2(0.6f, 0.3f);
+
+    [SerializeField]
+    Vector3 ladderCheckOffsett = new Vector3(0, 0, 0);
+
+    [SerializeField]
+    Vector2 ladderCheckSize = new Vector2(1, 1.9f);
 
     //CameraFollow cameraScript;
 
@@ -144,15 +162,15 @@ public class PlayerMovement : MonoBehaviour
                 rb2D.velocity = new Vector2(0, 0);
             }
 
-            if (Input.GetKey(KeyCode.Space))
+            // när man trycker på space, d eller a så ska man hoppa av åt de hållet man kollar
+            if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
             {
-                rb2D.velocity = new Vector2(speed * -facingRight, jumpForce);
-                facingRight *= -1;
-                
+                rb2D.velocity = new Vector2(speed * facingRight, jumpForce);
+                climbing = false;
             }
-            else if (!LadderCheck())
+            // när man slutar nudda stegen så hoppar man fram och upp
+            else if (LadderCheck() ==  null)
             {
-                // när man slutar nudda stegen så hoppar man fram och upp
                 rb2D.velocity = new Vector2(crouchSpeed * facingRight, 5);
             }
         }
@@ -191,10 +209,20 @@ public class PlayerMovement : MonoBehaviour
             canJump = true;
         }
 
-        if (LadderCheck())
+        GameObject ladder = LadderCheck();
+
+        if (ladder != null)
         {
-            climbing = true;
-            rb2D.gravityScale = 0;
+
+            // visa att om spelaren trycker på E börjar den klätra på stegen
+
+            // bara om spelaren trycker på E ska den börja klätra
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                transform.position = new Vector3(ladder.transform.position.x, transform.position.y, transform.position.z);
+                climbing = true;
+                rb2D.gravityScale = 0;
+            }      
         }
         else
         {
@@ -206,7 +234,7 @@ public class PlayerMovement : MonoBehaviour
     bool GroundCheck()
     {
         // skapar en raycast som börjar i spelaren, kollar om den träffar något i Ground layer och sparar detta i en hit variabeln
-        RaycastHit2D hit = Physics2D.BoxCast(transform.position - new Vector3(0, 0.95f, 0), new Vector2(0.6f, 0.3f), 0, Vector2.up, 0, groundMask);
+        RaycastHit2D hit = Physics2D.BoxCast(transform.position - groundCheckOffsett, groundCheckSize, 0, Vector2.up, 0, groundMask);
 
         // om raycasten har träffat någontig och punkten där den träffa är mindre än 0.6 units från spelaren
         if (hit.transform != null && hit.distance < 0.025F)
@@ -221,7 +249,7 @@ public class PlayerMovement : MonoBehaviour
     bool CelingCheck()
     {
         // skapar en BoxCast som kollar efter object i ground layer och sparar den i hit
-        RaycastHit2D hit = Physics2D.BoxCast(transform.position + new Vector3(0, 0.5f, 0), new Vector2(0.9f, 1), 0, Vector2.up, 0, groundMask);
+        RaycastHit2D hit = Physics2D.BoxCast(transform.position + celingCheckOffsett, celingCheckSize, 0, Vector2.up, 0, groundMask);
 
         // om hit har en transform skickar den true 
         if (hit.transform != null)
@@ -233,19 +261,19 @@ public class PlayerMovement : MonoBehaviour
         return false;
     }
 
-    bool LadderCheck()
+    GameObject LadderCheck()
     {
         // skapar en BoxCast som kollar efter object i ground layer och sparar den i hit
-        RaycastHit2D hit = Physics2D.BoxCast(transform.position + new Vector3(0.1f * facingRight, 0, 0), new Vector2(1f, 1.9f), 0, Vector2.up, 0, ladderMask);
+        RaycastHit2D hit = Physics2D.BoxCast(transform.position + ladderCheckOffsett, ladderCheckSize, 0, Vector2.up, 0, ladderMask);
 
-        // om hit har en transform skickar den true 
+        // om hit har en transform skickar den gameobjectet
         if (hit.transform != null)
         {
-            return true;
+            return hit.transform.gameObject;
         }
 
-        // annars false
-        return false;
+        // annars skickar den null
+        return null;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
