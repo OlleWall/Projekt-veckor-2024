@@ -49,6 +49,8 @@ public class PlayerMovement : MonoBehaviour
 
     float gravity;
 
+    //CameraFollow cameraScript;
+
     void Start()
     {
         // hämtar rigidbody componenten
@@ -59,6 +61,9 @@ public class PlayerMovement : MonoBehaviour
 
         // hämtar boxcollidern som då är den övre
         crouchCollider = GetComponent<BoxCollider2D>();
+
+        // reffererar till cameraFollow scriptet på cameran
+        //cameraScript = GetComponent<CameraFollow>();
 
         // sätter liveSpeed till den vanliga hastigheten
         liveSpeed = speed;
@@ -241,6 +246,15 @@ public class PlayerMovement : MonoBehaviour
 
         // annars false
         return false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        //när spelaren nuddar ett objekt med taggen CameraGraber så säger den åt kammeran att röra sig åt höger
+        if (collision.gameObject.tag == "CamerGraber")
+        {
+            //cameraScript.GrabCamera();
+        }
     }
 
     private void OnDrawGizmos()
