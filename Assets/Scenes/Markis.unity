@@ -201,7 +201,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 60024432}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.7, z: -9.2}
+  m_LocalPosition: {x: 1.59, y: 1.2, z: -9.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -222,7 +222,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 982126111}
-  smoothSpeed: 0.15
+  smoothSpeed: 100
+  offset: {x: 0, y: 4.2, z: -9.2}
 --- !u!1 &471174729
 GameObject:
   m_ObjectHideFlags: 0
@@ -638,6 +639,7 @@ MonoBehaviour:
   runningSpeed: 10
   speed: 6.8
   crouchSpeed: 5
+  climbingSpeed: 3
   jumpForce: 5
   coyoteTime: 0.01
   crouchCollider: {fileID: 0}
@@ -647,8 +649,6 @@ MonoBehaviour:
   ladderMask:
     serializedVersion: 2
     m_Bits: 0
-  climbing: 0
-  climbingSpeed: 3
 --- !u!61 &982126109
 BoxCollider2D:
   m_ObjectHideFlags: 0
