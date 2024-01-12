@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
 
     public bool canInteract; // om san ska något visas att spelaren kan interacta med något typ text över huvudet
 
-    bool climbing = false;
+    public bool climbing = false;
 
     int facingRight; // 1 = kollar höger -1 = vänster
 
@@ -108,9 +108,13 @@ public class PlayerMovement : MonoBehaviour
             facingRight = -1;
         }
 
+        GameObject ladder = LadderCheck();
+
         // bara när man inte klättrar ska man kunna göra dessa saker
         if (!climbing)
         {
+            rb2D.gravityScale = gravity;
+
             if (Input.GetKey(KeyCode.LeftShift) && !crouching)
             {
                 liveSpeed = runningSpeed;
@@ -157,6 +161,13 @@ public class PlayerMovement : MonoBehaviour
 
             canInteract = false;
 
+            if (ladder != null)
+            {
+                transform.position = new Vector3(ladder.gameObject.transform.position.x, transform.position.y, transform.position.z);
+            }
+
+            rb2D.gravityScale = 0;
+
             // om man trycker på W ska man åka upp om S åker man ned annars står man still
             if (Input.GetKey(KeyCode.W))
             {
@@ -171,8 +182,8 @@ public class PlayerMovement : MonoBehaviour
                 rb2D.velocity = new Vector2(0, 0);
             }
 
-            // när man trycker på space, d eller a så ska man hoppa av åt de hållet man kollar
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.A))
+            // när man trycker på space så hoppar man av åt de hållet man kollar
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 rb2D.velocity = new Vector2(speed * facingRight, jumpForce);
                 rb2D.gravityScale = gravity;
@@ -181,7 +192,8 @@ public class PlayerMovement : MonoBehaviour
             // när man slutar nudda stegen så hoppar man fram och upp
             else if (LadderCheck() ==  null)
             {
-                rb2D.velocity = new Vector2(crouchSpeed * facingRight, 5);
+                climbing = false;
+                rb2D.velocity = new Vector2(crouchSpeed * facingRight, 5);              
             }
         }
         // när crouching är true disableas crouchCollider som är den övre collidern och liveSpeed byts till crouchSpeed som är långsammare
@@ -219,8 +231,6 @@ public class PlayerMovement : MonoBehaviour
             canJump = true;
         }
 
-        GameObject ladder = LadderCheck();
-
         if (ladder != null)
         {
             // ska visa att om spelaren trycker på E börjar den klättra på stegen
@@ -230,18 +240,14 @@ public class PlayerMovement : MonoBehaviour
             }    
 
             // bara om spelaren trycker på E ska den börja klättra
-            if (canInteract && Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                transform.position = new Vector3(ladder.transform.position.x, transform.position.y, transform.position.z);
-                climbing = true;
-                rb2D.gravityScale = 0;
+                climbing = !climbing;
             }      
         }
         else
         {
             canInteract = false;
-            climbing = false;
-            rb2D.gravityScale = gravity;
         }
     }
 
