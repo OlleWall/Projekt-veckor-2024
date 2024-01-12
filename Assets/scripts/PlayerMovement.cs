@@ -31,7 +31,6 @@ public class PlayerMovement : MonoBehaviour
 
     bool canJump; // om man kan hoppa
 
-    [SerializeField]
     BoxCollider2D crouchCollider; // collidern som ska disableas när man crouchar
 
     Rigidbody2D rb2D;
@@ -59,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
     Vector2 celingCheckSize = new Vector2(0.9f, 1);
 
     [SerializeField]
-    Vector3 groundCheckOffsett = new Vector3(0, 0.95f, 0);
+    Vector3 groundCheckOffsett = new Vector3(0, -0.95f, 0);
 
     [SerializeField]
     Vector2 groundCheckSize = new Vector2(0.6f, 0.3f);
@@ -237,7 +236,7 @@ public class PlayerMovement : MonoBehaviour
     bool GroundCheck()
     {
         // skapar en raycast som börjar i spelaren, kollar om den träffar något i Ground layer och sparar detta i en hit variabeln
-        RaycastHit2D hit = Physics2D.BoxCast(transform.position - groundCheckOffsett, groundCheckSize, 0, Vector2.up, 0, groundMask);
+        RaycastHit2D hit = Physics2D.BoxCast(transform.position + groundCheckOffsett, groundCheckSize, 0, Vector2.up, 0, groundMask);
 
         // om raycasten har träffat någontig och punkten där den träffa är mindre än 0.6 units från spelaren
         if (hit.transform != null && hit.distance < 0.025F)
@@ -290,16 +289,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        // Crouchcheck raycast gizmo
+        // Celingcheck raycast gizmo
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.position + new Vector3(0, 0.5f, 0), new Vector2(0.9f, 1));
+        Gizmos.DrawWireCube(transform.position + celingCheckOffsett, celingCheckSize);
 
         // GroundCheck raycast gizmo
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireCube(transform.position - new Vector3(0, 0.95f, 0), new Vector3(0.6f, 0.3f));
+        Gizmos.DrawWireCube(transform.position + groundCheckOffsett, groundCheckSize);
 
         // Laddercheck raycast gizmo
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(transform.position + new Vector3(0.1f * facingRight, 0, 0), new Vector2(1f, 1.9f));
+        Gizmos.DrawWireCube(transform.position + ladderCheckOffsett, ladderCheckSize);
     }
 }
