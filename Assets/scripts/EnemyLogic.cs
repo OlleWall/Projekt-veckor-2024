@@ -17,12 +17,14 @@ public class EnemyLogic : MonoBehaviour
     [SerializeField]
     Vector2 patrolArea; // x = högra area slut, y = vänstra area slut
 
+    Vector2 livePatrolArea;
+
     Vector2 patrolPoint;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        livePatrolArea = new Vector2(transform.position.x + patrolArea.x, transform.position.x - patrolArea.y);
     }
 
     // Update is called once per frame
@@ -62,7 +64,6 @@ public class EnemyLogic : MonoBehaviour
                 patrolWaitTimer += Time.deltaTime;
             }
         }
-
         // kallar på funktionen för att gå mot patrolpointen
         MoveTowardsTarget(patrolPoint, speed);
     }
@@ -71,16 +72,18 @@ public class EnemyLogic : MonoBehaviour
     {
         // ta fram en random distans att gå sen randomly gå den distansen åt höger eller vänster
 
-        // skapar en random punkt inom arean
-        Vector2 pos = new Vector2(Random.Range(area.y, area.x), 0);
+        float leftArea = Mathf.Abs(area.y - transform.position.x);
+        float rightArea = Mathf.Abs(area.x - transform.position.x);
 
-        // om pos är mindre än en 1/3 av arean bort från enemy ska den skapa en ny tills det inte är så 
-        if (Vector2.Distance(pos, transform.position) < (area.x - area.y / 3))
+        Vector2 pos = new Vector2(0, 0);
+
+        if (rightArea > leftArea)
         {
-            do
-            {
-                pos = new Vector2(Random.Range(area.y, area.x), 0);
-            } while (Vector2.Distance(pos, transform.position) < (area.x - area.y / 3));
+            pos = new Vector2(Random.Range(transform.position.x, area.x), 0);
+        }
+        else
+        {
+            pos = new Vector2(Random.Range(transform.position.x, area.y), 0);
         }
         
         return pos;

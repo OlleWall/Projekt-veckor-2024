@@ -46,11 +46,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     LayerMask ladderMask; // layermasken för stegar
 
-    public bool canInteract; // om san ska något visas att spelaren kan interacta med något typ text över huvudet
+    bool canInteract; // om san ska något visas att spelaren kan interacta med något typ text över huvudet
 
-    public bool climbing = false;
+    bool climbing = false;
 
-    int facingRight; // 1 = kollar höger -1 = vänster
+    public int facingRight; // 1 = kollar höger -1 = vänster
 
     float gravity;
 

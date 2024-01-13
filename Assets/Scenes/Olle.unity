@@ -262,7 +262,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 582072432}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.298324, y: -0.51, z: 0}
+  m_LocalPosition: {x: 9, y: -0.51, z: 0}
   m_LocalScale: {x: 1.5, y: 4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -283,7 +283,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   status: 0
   speed: 2.5
-  patrolArea: {x: 29, y: 7}
+  patrolWaitTime: 2
+  patrolArea: {x: 29.19, y: 7.7}
 --- !u!1001 &1436186845
 PrefabInstance:
   m_ObjectHideFlags: 0
