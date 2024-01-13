@@ -292,7 +292,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -824,7 +824,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.24546158, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1153,8 +1153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e7e6ebbff701c142967db5e4a57f520, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runningSpeed: 10
-  speed: 6
+  runningSpeed: 6
+  speed: 3
   crouchSpeed: 3
   climbingSpeed: 4
   jumpForce: 15
@@ -1166,6 +1166,7 @@ MonoBehaviour:
   ladderMask:
     serializedVersion: 2
     m_Bits: 256
+  facingRight: 0
   celingCheckOffsett: {x: 0, y: 1, z: 0}
   celingCheckSize: {x: 0.9, y: 1}
   groundCheckOffsett: {x: 0, y: -0.9, z: 0}
@@ -1869,6 +1870,7 @@ GameObject:
   - component: {fileID: 6095517301889118296}
   - component: {fileID: 6095517301889118295}
   - component: {fileID: 6095517301889118294}
+  - component: {fileID: 6095517301889118297}
   m_Layer: 0
   m_Name: karaktar KLAR kopiera
   m_TagString: Untagged
@@ -1909,7 +1911,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6095517301889118291}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5aa4d47e577315949ab2db1ec2232fdb, type: 3}
   m_Name: 
@@ -1919,7 +1921,7 @@ MonoBehaviour:
   otherLeg: {fileID: 6095517301889118295}
   isBalanced: 0
   lerp: 0
-  overShootFactor: 0.5
+  overShootFactor: 1.2
   stepSpeed: 5
   footDisplacementOnX: 0.13
 --- !u!114 &6095517301889118295
@@ -1929,7 +1931,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6095517301889118291}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5aa4d47e577315949ab2db1ec2232fdb, type: 3}
   m_Name: 
@@ -1969,6 +1971,34 @@ MonoBehaviour:
     showGizmo: 1
   - color: {r: 0, g: 1, b: 0, a: 1}
     showGizmo: 1
+--- !u!114 &6095517301889118297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6095517301889118291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49b6052ac26b6974c939f2dace9340ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isBalanced: 0
+  isRunning: 0
+  leftFootCanMove: 0
+  rightFootCanMove: 0
+  player: {fileID: 1548556741580651575}
+  leftTarget: {fileID: 507952559}
+  rightTarget: {fileID: 1696561943}
+  moveDirection: 0
+  targetRaycastBuffer: 1
+  rightLerp: 0.02
+  leftLerp: 0
+  extraStepDis: 1
+  runStepMulti: 1.5
+  stepSpeed: 1.5
+  leftFootDistanceFromCenter: 0.13
+  rightFootDistanceFromCenter: -0.105
 --- !u!1 &6209979076400631944
 GameObject:
   m_ObjectHideFlags: 0

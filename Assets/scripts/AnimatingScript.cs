@@ -76,7 +76,8 @@ public class AnimatingScript : MonoBehaviour
         RaycastHit2D ray = Physics2D.Raycast(player.transform.position + new Vector3(footDisplacementOnX, 0, 0), Vector2.down, 10);
 
         //consider the overshoot factor
-        Vector3 posDiff = ((Vector3)ray.point - legTarget.position) * (1 + overShootFactor);
+        Vector3 posDiff = ((Vector3)ray.point - legTarget.position).normalized * (1 + overShootFactor);
+        //posDiff = new Vector3(posDiff.x , ray.point.y, 0);
 
         //find end target position
         endPos = legTarget.position + posDiff;
