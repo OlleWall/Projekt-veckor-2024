@@ -36,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
 
     Rigidbody2D rb2D;
 
-    float inputX;
+    public float inputX;
 
     bool crouching = false;
 
