@@ -41,7 +41,7 @@ public class EnemyLogic : MonoBehaviour
     {
         if (CanSee())
         {
-            print("I SEE YOU!!!!!!");
+            status = 2;
         }
 
         switch (status)
@@ -60,6 +60,8 @@ public class EnemyLogic : MonoBehaviour
 
     void Passive()
     {
+        print(Vector2.Distance(patrolPoint, transform.position));
+
         // om det inte finns en patrolPoint skapar den en
         if (patrolPoint == new Vector2(0, 0))
         {
@@ -86,6 +88,8 @@ public class EnemyLogic : MonoBehaviour
     {
         // ta fram en random distans att gå sen randomly gå den distansen åt höger eller vänster
 
+        print("skapar en ny patrol point");
+
         float leftArea = Mathf.Abs(area.y - transform.position.x);
         float rightArea = Mathf.Abs(area.x - transform.position.x);
 
@@ -93,11 +97,11 @@ public class EnemyLogic : MonoBehaviour
 
         if (rightArea > leftArea)
         {
-            pos = new Vector2(Random.Range(transform.position.x, area.x), 0);
+            pos = new Vector2(Random.Range(transform.position.x, area.x), transform.position.y);
         }
         else
         {
-            pos = new Vector2(Random.Range(transform.position.x, area.y), 0);
+            pos = new Vector2(Random.Range(transform.position.x, area.y), transform.position.y);
         }
         
         return pos;
@@ -124,7 +128,7 @@ public class EnemyLogic : MonoBehaviour
 
     void Chasing()
     {
-
+        print("i attacking you");
     }
 
     public bool CanSee()
