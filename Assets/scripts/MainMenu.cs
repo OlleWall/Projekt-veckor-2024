@@ -7,7 +7,7 @@ public class MainMenu : MonoBehaviour
 {
     public void PlayGame()
     {
-        SceneManager.LoadScene("NEXT-SCENE-1");
+        SceneManager.LoadScene("ConceptLevel");
     }
 
     public void OptionScreen()
