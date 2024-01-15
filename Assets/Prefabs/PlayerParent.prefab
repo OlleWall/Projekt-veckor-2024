@@ -1710,7 +1710,7 @@ GameObject:
   - component: {fileID: 7848790142115072471}
   m_Layer: 7
   m_Name: player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1819,7 +1819,7 @@ MonoBehaviour:
   ladderMask:
     serializedVersion: 2
     m_Bits: 256
-  canInteract: 0
+  facingRight: 0
   celingCheckOffsett: {x: 0, y: 1, z: 0}
   celingCheckSize: {x: 0.9, y: 1}
   groundCheckOffsett: {x: 0, y: -0.9, z: 0}

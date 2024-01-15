@@ -6,6 +6,9 @@ public class EnemyLogic : MonoBehaviour
 {
     public int status = 0; // 0 = passive, 1 = searching, 2 = chasing
 
+    [SerializeField]
+    Transform player;
+
     [SerializeField, Range(0, 5)]
     float speed = 2.5f;
 
@@ -15,21 +18,32 @@ public class EnemyLogic : MonoBehaviour
     float patrolWaitTimer;
 
     [SerializeField]
+    LayerMask mask;
+
+    [SerializeField, Range(0, 20)]
+    float spotDistance = 5;
+
+    [SerializeField]
     Vector2 patrolArea; // x = högra area slut, y = vänstra area slut
 
-    Vector2 livePatrolArea;
-
     Vector2 patrolPoint;
+
+    PlayerMovement playerScript;
 
     // Start is called before the first frame update
     void Start()
     {
-        livePatrolArea = new Vector2(transform.position.x + patrolArea.x, transform.position.x - patrolArea.y);
+        playerScript = GetComponent<PlayerMovement>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (CanSee())
+        {
+            print("I SEE YOU!!!!!!");
+        }
+
         switch (status)
         {
             case 0:
@@ -113,10 +127,42 @@ public class EnemyLogic : MonoBehaviour
 
     }
 
-    private void OnDrawGizmos()
+    public bool CanSee()
+    {
+        Vector2 top = new Vector2(player.position.x, player.position.y + (player.localScale.y / 2));
+        Vector2 bottom = new Vector2(player.position.x, player.position.y - (player.localScale.y / 2));
+
+        RaycastHit2D[] hits =
+        {
+            Physics2D.Raycast(transform.position, -1 * new Vector2(transform.position.x - top.x, transform.position.y - top.y), Mathf.Infinity, mask),
+            Physics2D.Raycast(transform.position, -1 * new Vector2(transform.position.x - bottom.x, transform.position.y - bottom.y), Mathf.Infinity, mask)
+        };
+
+        Debug.DrawRay(transform.position, -1 * new Vector2(transform.position.x - top.x, transform.position.y - top.y), Color.red);
+        Debug.DrawRay(transform.position, -1 * new Vector2(transform.position.x - bottom.x, transform.position.y - bottom.y), Color.red);
+
+        foreach (RaycastHit2D x in hits)
+        {
+            if (x.transform != null)
+            {
+                if (x.transform.gameObject.tag == "Player" && x.distance <= spotDistance)
+                {
+                    return true;
+                }
+            }           
+        }
+
+        return false;
+    }
+
+    void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawLine(new Vector3(patrolArea.x, transform.position.y + 3, 0), new Vector3(patrolArea.x, transform.position.y - 3, 0));
         Gizmos.DrawLine(new Vector3(patrolArea.y, transform.position.y + 3, 0), new Vector3(patrolArea.y, transform.position.y - 3, 0));
+
+        /*Gizmos.color = Color.green;
+        Gizmos.DrawLine(transform.position, new Vector2(player.position.x, player.position.y + (player.localScale.y / 2)));
+        Gizmos.DrawLine(transform.position, new Vector2(player.position.x, player.position.y - (player.localScale.y / 2)));*/
     }
 }
