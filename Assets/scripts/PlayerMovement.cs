@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Range(1, 10)]
     float speed = 5; // den vanliga hastigheten
 
-    float liveSpeed; // hastigheten som används i movment
+    public float liveSpeed; // hastigheten som används i movment
 
     [SerializeField, Range(1, 10)]
     float crouchSpeed = 5; // hastigheten när man crouchar
@@ -34,11 +34,11 @@ public class PlayerMovement : MonoBehaviour
 
     BoxCollider2D crouchCollider; // collidern som ska disableas när man crouchar
 
-    Rigidbody2D rb2D;
+    public Rigidbody2D rb2D;
 
     public float inputX;
 
-    bool crouching = false;
+    public bool crouching = false;
 
     [SerializeField]
     LayerMask groundMask; // layermasken för marken
@@ -251,7 +251,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    bool GroundCheck()
+    public bool GroundCheck()
     {
         // skapar en raycast som börjar i spelaren, kollar om den träffar något i Ground layer och sparar detta i en hit variabeln
         RaycastHit2D hit = Physics2D.BoxCast(transform.position + groundCheckOffsett, groundCheckSize, 0, Vector2.up, 0, groundMask);
