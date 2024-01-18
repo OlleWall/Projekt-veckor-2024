@@ -188,7 +188,7 @@ public class ProceduralAnimation : MonoBehaviour
         #endregion
 
         #region Idle
-        if (movementCode.inputX == 0 && !isTakingStep && movementCode.gameObject.GetComponent<Rigidbody2D>().velocity.magnitude < 0.1f)
+        if (movementCode.inputX == 0 && !isTakingStep && movementCode.rb2D.velocity.magnitude < 0.1f && !isJumping)
         {
             if (!facingRight)
             {
@@ -219,7 +219,7 @@ public class ProceduralAnimation : MonoBehaviour
         #endregion
 
         #region Walking & Running
-        if (movementCode.inputX != 0 || isTakingStep)
+        if ((movementCode.inputX != 0 && !isJumping) || (isTakingStep && !isJumping))
         {
             //moveDirection 1 = höger, -1 = vänster
             moveDirection = movementCode.facingRight;
@@ -282,15 +282,19 @@ public class ProceduralAnimation : MonoBehaviour
                 //left arm
             }
 
-            /*if (movementCode.groundCheck())
+            if (movementCode.GroundCheck())
             {
                 isJumping = false;
-            }*/
+            }
         }
         #endregion
 
         #region Crouching
-
+        if (movementCode.crouching)
+        {
+            //speedmulti, kanske *0.5
+            //böj ryggen, sätt gubben närmare marken
+        }
 
         #endregion
 
