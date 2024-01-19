@@ -187,6 +187,37 @@ Transform:
   m_Father: {fileID: 4926860356947699760}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &245483242
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 245483243}
+  m_Layer: 0
+  m_Name: EnemySpawnpoint1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &245483243
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 245483242}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.96, y: -2.5207973, z: -0.7101113}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &383734722
 GameObject:
   m_ObjectHideFlags: 0
@@ -449,6 +480,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7866009752720949490}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &843990117
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 843990118}
+  m_Layer: 0
+  m_Name: EnemySpawnpoint2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &843990118
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 843990117}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.69, y: -2.5207973, z: -0.7101113}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &886984920
 GameObject:
@@ -939,6 +1001,55 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1725194822
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1725194824}
+  - component: {fileID: 1725194823}
+  m_Layer: 0
+  m_Name: EnemySpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1725194823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1725194822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25b57f8bb574b8f4687f305e1df4f54f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemySpawnPositions:
+  - {fileID: 245483242}
+  - {fileID: 843990117}
+  enemyObject1: {fileID: 1829405228453376382, guid: f0e81b0e242537241b562dcc7a47fcc3, type: 3}
+  enemyObject2: {fileID: 8923348085974726801, guid: e72d440e24a2dce4495b7c1ec586ee29, type: 3}
+--- !u!4 &1725194824
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1725194822}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.11654968, y: -2.5207973, z: -0.7101113}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1755235631
 GameObject:
   m_ObjectHideFlags: 0
@@ -1259,12 +1370,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runningSpeed: 6
   speed: 3
-  crouchSpeed: 3
+  liveSpeed: 0
+  crouchSpeed: 2
   climbingSpeed: 4
   jumpForce: 15
   airSpeedMultiplier: 0.3
   coyoteTime: 0.075
+  rb2D: {fileID: 0}
   inputX: 0
+  crouching: 0
   groundMask:
     serializedVersion: 2
     m_Bits: 64
@@ -2048,6 +2162,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isBalanced: 0
   isRunning: 0
+  isJumping: 0
+  isCrouching: 0
+  isTakingStep: 0
   leftLegCanMove: 0
   leftArmCanMove: 0
   rightLegCanMove: 0
@@ -2055,9 +2172,9 @@ MonoBehaviour:
   leftLegMovedLast: 0
   rightLegMovedLast: 0
   facingRight: 0
-  lerpsAreEqual: 0
-  isTakingStep: 0
   player: {fileID: 1548556741580651575}
+  lowerBackBone: {fileID: 6209979076400631944}
+  upperBackBone: {fileID: 9129632106965952713}
   leftLegTarget: {fileID: 507952559}
   leftArmTarget: {fileID: 1169269730}
   rightLegTarget: {fileID: 1696561943}
@@ -2066,20 +2183,24 @@ MonoBehaviour:
   leftLegObject: {fileID: 830496462}
   moveDirection: 0
   targetRaycastBuffer: 1
+  extraStepDis: 1.3
+  timeBackToIdle: 0.5
+  crouchHeight: 0.5
+  crouchLowerBackRotation: 45
+  crouchUpperBackRotation: 45
   stepHeight: 1
+  stepSpeed: 4
+  stepCooldown: 0.75
+  runStepMulti: 1.7
+  crouchStepMulti: 0.5
   _stepTime: 0
   _rightLerp: 0.02
-  _leftLerp: 0
-  timeBackToIdle: 0.5
-  extraStepDis: 1.3
-  runStepMulti: 1.25
-  stepSpeed: 4
   leftLegDistanceFromCenter: 0.13
   leftArmDistanceFromCenter: 0.33
   rightLegDistanceFromCenter: -0.105
   rightArmDistanceFromCenter: -0.33
   armHeightDifferenceFromCenter: -0.1
-  stepCooldown: 0.75
+  feetPlacementInAir: 0
 --- !u!1 &6209979076400631944
 GameObject:
   m_ObjectHideFlags: 0
