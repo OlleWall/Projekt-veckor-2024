@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ConceptLevel.unity
     guid: 1a5c6aedf2bba6741b15ff44609864df
+  - enabled: 0
+    path: Assets/Scenes/Markis.unity
+    guid: abb685b90d72dd146a5ac13c0cef2768
   m_configObjects: {}
