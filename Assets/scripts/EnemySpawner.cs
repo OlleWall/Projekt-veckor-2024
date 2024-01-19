@@ -16,8 +16,9 @@ public class EnemySpawner : MonoBehaviour
     public GameObject enemyObject3;
     public GameObject enemyObject4;
     public GameObject enemyObject5;
-    
 
+
+    bool spawnOtherEnemy = false;
     float randomValue;
     float extraValue;
 
@@ -30,31 +31,31 @@ public class EnemySpawner : MonoBehaviour
         {
             if (upperClass)
             {
-                if (randomValue < 0.5f || extraValue < 0.5f)
+                if (!spawnOtherEnemy)
                 {
                     Instantiate(enemyObject1, enemySpawnPositions[i].transform.position, Quaternion.identity);
-                    extraValue = 0.75f;
+                    spawnOtherEnemy = true;
                 }
 
-                else if (randomValue >= 0.5f || extraValue >= 0.5f)
+                else if (spawnOtherEnemy)
                 {
                     Instantiate(enemyObject2, enemySpawnPositions[i].transform.position, Quaternion.identity);
-                    extraValue = 0.25f;
+                    spawnOtherEnemy = false;
                 }
             }
 
             if (middleClass)
             {
-                if (randomValue < 0.5f || extraValue < 0.5f)
+                if (!spawnOtherEnemy)
                 {
                     Instantiate(enemyObject3, enemySpawnPositions[i].transform.position, Quaternion.identity);
-                    extraValue = 0.75f;
+                    spawnOtherEnemy = true;
                 }
 
-                else if (randomValue >= 0.5f || extraValue >= 0.5f)
+                else if (spawnOtherEnemy)
                 {
                     Instantiate(enemyObject4, enemySpawnPositions[i].transform.position, Quaternion.identity);
-                    extraValue = 0.25f;
+                    spawnOtherEnemy = false;
                 }
             }
 

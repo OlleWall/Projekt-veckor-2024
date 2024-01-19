@@ -147,6 +147,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  enemySpeed: 1.2
+  enemySpeed: 2
   rb: {fileID: 0}
   playerIsToTheRight: 0

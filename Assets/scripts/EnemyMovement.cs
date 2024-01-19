@@ -46,9 +46,7 @@ public class EnemyMovement : MonoBehaviour
     {
         if(collision.gameObject == player)
         {
-            print("switch scene");
             SceneManager.LoadScene("MainMenu");
-            Destroy(player);
         }
     }
 }
