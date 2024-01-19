@@ -11,6 +11,9 @@ public class CameraFollow : MonoBehaviour
 
     void LateUpdate()
     {
+        transform.position = new Vector3(player.transform.position.x, transform.position.y, transform.position.z);
+        /*
+
         // skapar en temporär variable för att inte tappa normala offseten. Olle
         Vector3 tempOffset = offset;
 
@@ -35,5 +38,6 @@ public class CameraFollow : MonoBehaviour
             transform.position = new Vector3(smoothedPosition.x, smoothedPosition.y, transform.position.z);
             
         }
+        */
     }
 }
