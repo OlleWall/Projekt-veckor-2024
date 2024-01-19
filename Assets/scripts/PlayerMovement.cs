@@ -20,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
     float climbingSpeed = 3; // hastigheten när man klättrar
 
     [SerializeField, Range(1, 100)]
-    float jumpForce = 5; // kraften man hoppar med
+    public float jumpForce = 5; // kraften man hoppar med
 
     [SerializeField, Range(0, 1)]
     float airSpeedMultiplier = 0.3f;

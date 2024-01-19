@@ -40,6 +40,9 @@ public class ProceduralAnimation : MonoBehaviour
     #region References
     public GameObject player;
     private GameObject playerSprite;
+
+    public GameObject lowerBackBone;
+    public GameObject upperBackBone;
     
     PlayerMovement movementCode;
     
@@ -63,12 +66,21 @@ public class ProceduralAnimation : MonoBehaviour
 
     public float timeBackToIdle = 0.15f;
 
+    public float crouchHeight;
+    public float crouchLowerBackRotation;
+    public float crouchUpperBackRotation;
+
+    float jumpForceOriginalValue;
+
     public float stepHeight;
     public float stepSpeed;
     public float stepCooldown;
 
     public float runStepMulti; //variabel för att ändra multiplier i unity
     private float runningStepDistanceMultiplier; //variabeln som faktiskt används av koden, olika för att komma ihåg 
+
+    public float crouchStepMulti; //oanvänd för tillfället
+    private float crouchingStepDistanceMultiplier = 1f; //oanvänd för tillfället
 
     #region Properties
     public float _stepTime;
@@ -158,6 +170,8 @@ public class ProceduralAnimation : MonoBehaviour
 
         leftLegStartPos = leftLegEndPos = leftLegObject.transform.position;
         rightLegStartPos = rightLegEndPos = rightLegObject.transform.position;
+
+        jumpForceOriginalValue = movementCode.jumpForce;
     }
 
     private void Update()
@@ -174,6 +188,8 @@ public class ProceduralAnimation : MonoBehaviour
         {
             playerSprite.transform.localScale = new Vector3(-playerSprite.transform.localScale.x, playerSprite.transform.localScale.y, playerSprite.transform.localScale.z);
             playerSprite.transform.localPosition = new Vector3(-playerSprite.transform.localPosition.x, playerSprite.transform.localPosition.y, playerSprite.transform.localPosition.z);
+
+            //lowerBackBone.transform.eulerAngles = new Vector3(lowerBackBone.transform.eulerAngles.x, lowerBackBone.transform.eulerAngles.y, 90);
 
             facingRight = true;
         }
@@ -292,10 +308,34 @@ public class ProceduralAnimation : MonoBehaviour
         #region Crouching
         if (movementCode.crouching)
         {
-            //speedmulti, kanske *0.5
-            //böj ryggen, sätt gubben närmare marken
-        }
+            movementCode.jumpForce = 4f;
+            crouchingStepDistanceMultiplier = crouchStepMulti;
 
+            if (facingRight)
+            {
+                lowerBackBone.transform.localEulerAngles = new Vector3(lowerBackBone.transform.localEulerAngles.x, lowerBackBone.transform.localEulerAngles.y, 90);
+                lowerBackBone.transform.localEulerAngles = new Vector3(lowerBackBone.transform.localEulerAngles.x, lowerBackBone.transform.localEulerAngles.y, lowerBackBone.transform.localEulerAngles.z + crouchLowerBackRotation);
+
+                upperBackBone.transform.localEulerAngles = new Vector3(upperBackBone.transform.localEulerAngles.x, upperBackBone.transform.localEulerAngles.y, 90);
+                upperBackBone.transform.localEulerAngles = new Vector3(upperBackBone.transform.localEulerAngles.x, upperBackBone.transform.localEulerAngles.y, crouchUpperBackRotation);
+            }
+            else
+            {
+                lowerBackBone.transform.localEulerAngles = new Vector3(lowerBackBone.transform.localEulerAngles.x, lowerBackBone.transform.localEulerAngles.y, 90);
+                lowerBackBone.transform.localEulerAngles = new Vector3(lowerBackBone.transform.localEulerAngles.x, lowerBackBone.transform.localEulerAngles.y, lowerBackBone.transform.localEulerAngles.z + crouchLowerBackRotation);
+
+                upperBackBone.transform.localEulerAngles = new Vector3(upperBackBone.transform.localEulerAngles.x, upperBackBone.transform.localEulerAngles.y, 90);
+                upperBackBone.transform.localEulerAngles = new Vector3(upperBackBone.transform.localEulerAngles.x, upperBackBone.transform.localEulerAngles.y, crouchUpperBackRotation);
+            }
+        }
+        else
+        {
+            movementCode.jumpForce = jumpForceOriginalValue;
+            crouchingStepDistanceMultiplier = 1;
+
+            lowerBackBone.transform.localEulerAngles = new Vector3(lowerBackBone.transform.localEulerAngles.x, lowerBackBone.transform.localEulerAngles.y, 90);
+            upperBackBone.transform.localEulerAngles = new Vector3(upperBackBone.transform.localEulerAngles.x, upperBackBone.transform.localEulerAngles.y, 0);
+        }
         #endregion
 
         #region ChangeTargetsPositions
