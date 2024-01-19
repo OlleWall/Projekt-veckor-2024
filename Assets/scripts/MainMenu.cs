@@ -7,7 +7,7 @@ public class MainMenu : MonoBehaviour
 {
     public void PlayGame()
     {
-        SceneManager.LoadScene("ConceptLevel");
+        SceneManager.LoadScene("UpperClassScene");
     }
 
     public void OptionScreen()
@@ -27,5 +27,20 @@ public class MainMenu : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void LoadCreditsFromWin()
+    {
+        SceneManager.LoadScene("CreditsFromWin");
+    }
+
+    public void ReturnToWinScreen()
+    {
+        SceneManager.LoadScene("EndScene");
+    }
+
+    public void Return()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }

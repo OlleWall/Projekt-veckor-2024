@@ -380,6 +380,7 @@ public class ProceduralAnimation : MonoBehaviour
         #endregion
     }
 
+
     private void CalculateStep() //räknar ut var fötterna ska placeras, har försökt anpassa det så att det blir rätt vid sprint
     {
         //!isbalanced && leg furthest away from me should move

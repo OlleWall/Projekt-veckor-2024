@@ -11,7 +11,7 @@ public class CameraFollow : MonoBehaviour
 
     void LateUpdate()
     {
-        transform.position = new Vector3(player.transform.position.x, transform.position.y, transform.position.z);
+        transform.position = new Vector3(player.transform.position.x, transform.position.y, transform.position.z); //simon
         /*
 
         // skapar en temporär variable för att inte tappa normala offseten. Olle

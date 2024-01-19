@@ -9,18 +9,24 @@ EditorBuildSettings:
     path: 
     guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
+    path: Assets/Scenes/UsedLevels/MainMenu.unity
     guid: c0ee111ff030a03439598f08b878cfdc
   - enabled: 1
-    path: Assets/Scenes/Credits.unity
+    path: Assets/Scenes/UsedLevels/Credits.unity
     guid: 3e53f5eae740f7c44a104ef53e3f590d
   - enabled: 1
-    path: Assets/Scenes/Options.unity
+    path: Assets/Scenes/UsedLevels/CreditsFromWin.unity
+    guid: 4e584f707e40c424ea556ee7811aaf7f
+  - enabled: 1
+    path: Assets/Scenes/UsedLevels/Options.unity
     guid: 29cdba1629a8f954d97a493400e946d0
   - enabled: 1
-    path: Assets/Scenes/ConceptLevel.unity
-    guid: 1a5c6aedf2bba6741b15ff44609864df
-  - enabled: 0
-    path: Assets/Scenes/Markis.unity
-    guid: abb685b90d72dd146a5ac13c0cef2768
+    path: Assets/Scenes/UsedLevels/UpperClassScene.unity
+    guid: 6c17c1f7756846140817e86b2008b861
+  - enabled: 1
+    path: Assets/Scenes/UsedLevels/MiddleClassScene.unity
+    guid: 2389d224d21a8d041adbe5dc4c38a577
+  - enabled: 1
+    path: Assets/Scenes/UsedLevels/EndScene.unity
+    guid: 80a74d91f5f4e954484b585fd3f17f43
   m_configObjects: {}
