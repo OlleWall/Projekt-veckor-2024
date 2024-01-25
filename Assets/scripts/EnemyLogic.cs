@@ -60,7 +60,7 @@ public class EnemyLogic : MonoBehaviour
 
     void Passive()
     {
-        print(Vector2.Distance(patrolPoint, transform.position));
+        //print(Vector2.Distance(patrolPoint, transform.position));
 
         // om det inte finns en patrolPoint skapar den en
         if (patrolPoint == new Vector2(0, 0))
