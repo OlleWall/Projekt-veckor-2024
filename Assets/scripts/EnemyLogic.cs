@@ -91,7 +91,7 @@ public class EnemyLogic : MonoBehaviour
     {
         // ta fram en random distans att gå sen randomly gå den distansen åt höger eller vänster
 
-        print("skapar en ny patrol point");
+        //print("skapar en ny patrol point");
 
         // räknar ut hur avståndet till slutet av patrol areaen
         float leftArea = Mathf.Abs(area.x - transform.position.x);

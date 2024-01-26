@@ -47,15 +47,15 @@ public class PlayerMovement : MonoBehaviour
     LayerMask celingMask; // layermasken för saker man inte ska kunna stå under
 
     [SerializeField]
-    LayerMask ladderMask; // layermasken för stegar
-
-    bool canInteract; // om san ska något visas att spelaren kan interacta med något typ text över huvudet
+    LayerMask interactMask; // layermasken för stegar
 
     bool climbing = false;
 
     public int facingRight; // 1 = kollar höger -1 = vänster
 
-    float gravity;
+    float gravity; // vanliga gravitationen
+
+    public List<int> inventory;
 
     [SerializeField]
     Vector3 celingCheckOffsett = new Vector3(0, 0.5f, 0);
@@ -70,10 +70,10 @@ public class PlayerMovement : MonoBehaviour
     Vector2 groundCheckSize = new Vector2(0.6f, 0.3f);
 
     [SerializeField]
-    Vector3 ladderCheckOffsett = new Vector3(0, 0, 0);
+    Vector3 interactCheckOffsett = new Vector3(0, 0, 0);
 
     [SerializeField]
-    Vector2 ladderCheckSize = new Vector2(1, 1.9f);
+    Vector2 interactCheckSize = new Vector2(1, 1.9f);
 
     //CameraFollow cameraScript;
 
@@ -82,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
         // hämtar rigidbody componenten
         rb2D = GetComponent<Rigidbody2D>();
 
-        // sätter gravity till gravityn på rigidbodyn
+        // sätter gravity till gravitationen på rigidbodyn
         gravity = rb2D.gravityScale;
 
         // hämtar boxcollidern som då är den övre
@@ -98,6 +98,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        #region Movement och klättring
         // uppdaterar inputX med inputen i horizontella riktningen
         inputX = Input.GetAxisRaw("Horizontal");
 
@@ -111,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
             facingRight = -1;
         }
 
-        GameObject ladder = LadderCheck();
+        GameObject interactedObject = InteractCheck();
 
         // bara när man inte klättrar ska man kunna göra dessa saker
         if (!climbing)
@@ -162,11 +163,9 @@ public class PlayerMovement : MonoBehaviour
         {
             crouching = false;
 
-            canInteract = false;
-
-            if (ladder != null)
+            if (interactedObject != null && interactedObject.tag == "Ladder")
             {
-                transform.position = new Vector3(ladder.gameObject.transform.position.x, transform.position.y, transform.position.z);
+                transform.position = new Vector3(interactedObject.gameObject.transform.position.x, transform.position.y, transform.position.z);
             }
 
             rb2D.gravityScale = 0;
@@ -195,12 +194,15 @@ public class PlayerMovement : MonoBehaviour
                 climbing = false;
             }
             // när man slutar nudda stegen så hoppar man fram och upp
-            else if (LadderCheck() ==  null)
+            else if (InteractCheck() ==  null)
             {
                 climbing = false;
                 rb2D.velocity = new Vector2(crouchSpeed * facingRight, 5);              
             }
         }
+        #endregion
+
+        #region Crouching
         // när crouching är true disableas crouchCollider som är den övre collidern och liveSpeed byts till crouchSpeed som är långsammare
         if (crouching)
         {
@@ -213,7 +215,9 @@ public class PlayerMovement : MonoBehaviour
             crouchCollider.enabled = true;
             liveSpeed = speed;
         }
+        #endregion
 
+        #region Jumping
         // använder GroundCheck för att kolla om spelaren är på marken och om den är det sätts coyoteTimer till 0
         if (GroundCheck())
         {
@@ -235,24 +239,22 @@ public class PlayerMovement : MonoBehaviour
         {
             canJump = true;
         }
+        #endregion
 
-        if (ladder != null)
+        if (interactedObject != null && Input.GetKeyDown(KeyCode.E))
         {
-            // ska visa att om spelaren trycker på E börjar den klättra på stegen
-            if (!climbing)
-            {
-                canInteract = true;
-            }    
-
-            // bara om spelaren trycker på E ska den börja klättra
-            if (Input.GetKeyDown(KeyCode.E))
+            // om objectets tag är ladder ska den sluta klättra om den klättrar och börja om den inte
+            if (interactedObject.tag == "Ladder")
             {
                 climbing = !climbing;
-            }      
-        }
-        else
-        {
-            canInteract = false;
+            }
+            else if (interactedObject.tag == "Door")
+            {
+                foreach (int key in inventory)
+                {
+                    interactedObject.GetComponent<DoorLogic>().Open(inventory);
+                }
+            }
         }
     }
 
@@ -286,10 +288,14 @@ public class PlayerMovement : MonoBehaviour
         return false;
     }
 
-    GameObject LadderCheck()
+    GameObject InteractCheck()
     {
-        // skapar en BoxCast som kollar efter object i ground layer och sparar den i hit
-        RaycastHit2D hit = Physics2D.BoxCast(transform.position + ladderCheckOffsett, ladderCheckSize, 0, Vector2.up, 0, ladderMask);
+        // skapar en BoxCast som kollar efter object i interactable layer och sparar den i hit
+        RaycastHit2D hit = Physics2D.BoxCast
+        (
+            new Vector2(transform.position.x + interactCheckOffsett.x * facingRight, transform.position.y + interactCheckOffsett.y),
+            interactCheckSize, 0, Vector2.up, 0, interactMask
+        );
 
         // om hit har en transform skickar den gameobjectet
         if (hit.transform != null)
@@ -320,8 +326,8 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.color = Color.blue;
         Gizmos.DrawWireCube(transform.position + groundCheckOffsett, groundCheckSize);
 
-        // Laddercheck raycast gizmo
+        // Interactivecheck raycast gizmo
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(transform.position + ladderCheckOffsett, ladderCheckSize);
+        Gizmos.DrawWireCube(new Vector2(transform.position.x + interactCheckOffsett.x * facingRight, transform.position.y + interactCheckOffsett.y), interactCheckSize);
     }
 }

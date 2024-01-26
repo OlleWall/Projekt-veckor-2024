@@ -7,6 +7,8 @@ TagManager:
   - CameraGraber
   - MiddleClassWin
   - UpperClassWin
+  - Ladder
+  - Door
   layers:
   - Default
   - TransparentFX
@@ -16,9 +18,9 @@ TagManager:
   - UI
   - Ground
   - Player
-  - Ladder
+  - Interactable
   - Enemy
-  - 
+  - Grabbable
   - 
   - 
   - 
