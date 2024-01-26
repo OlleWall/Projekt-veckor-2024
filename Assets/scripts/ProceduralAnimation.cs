@@ -239,6 +239,7 @@ public class ProceduralAnimation : MonoBehaviour
         {
             //moveDirection 1 = höger, -1 = vänster
             moveDirection = movementCode.facingRight;
+
             UpdateBalance();
 
             #region CalculateStepCall
@@ -298,10 +299,11 @@ public class ProceduralAnimation : MonoBehaviour
                 //left arm
             }
 
-            if (movementCode.GroundCheck())
-            {
-                isJumping = false;
-            }
+            
+        }
+        else if (movementCode.GroundCheck())
+        {
+            isJumping = false;
         }
         #endregion
 

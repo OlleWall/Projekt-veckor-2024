@@ -171,6 +171,7 @@ public class PlayerMovement : MonoBehaviour
 
             rb2D.gravityScale = 0;
 
+            #region LadderMovement
             // om man trycker på W ska man åka upp om S åker man ned annars står man still
             if (Input.GetKey(KeyCode.W))
             {
@@ -184,12 +185,13 @@ public class PlayerMovement : MonoBehaviour
             {
                 rb2D.velocity = new Vector2(0, 0);
             }
+            #endregion
 
             // när man trycker på space så hoppar man av åt de hållet man kollar
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 rb2D.velocity = new Vector2(speed * facingRight, jumpForce);
-                rb2D.gravityScale = gravity;
+                //rb2D.gravityScale = gravity;
                 climbing = false;
             }
             // när man slutar nudda stegen så hoppar man fram och upp

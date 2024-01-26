@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4046811982537420786}
   - component: {fileID: 7141237227770645433}
   m_Layer: 8
-  m_Name: LadderSprite
+  m_Name: Ladder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
