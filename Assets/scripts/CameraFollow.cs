@@ -31,8 +31,6 @@ public class CameraFollow : MonoBehaviour
             tempOffset = new Vector3(tempOffset.x, 0, tempOffset.z);
         }
 
-        print(tempOffset);
-
         if (player != null)
         {
             Vector3 desiredPosition = player.position + tempOffset;
