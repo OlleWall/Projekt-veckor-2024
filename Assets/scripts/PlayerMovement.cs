@@ -44,6 +44,9 @@ public class PlayerMovement : MonoBehaviour
     LayerMask groundMask; // layermasken för marken
 
     [SerializeField]
+    LayerMask celingMask; // layermasken för saker man inte ska kunna stå under
+
+    [SerializeField]
     LayerMask ladderMask; // layermasken för stegar
 
     bool canInteract; // om san ska något visas att spelaren kan interacta med något typ text över huvudet
@@ -269,7 +272,7 @@ public class PlayerMovement : MonoBehaviour
     bool CelingCheck()
     {
         // skapar en BoxCast som kollar efter object i ground layer och sparar den i hit
-        RaycastHit2D hit = Physics2D.BoxCast(transform.position + celingCheckOffsett, celingCheckSize, 0, Vector2.up, 0, groundMask);
+        RaycastHit2D hit = Physics2D.BoxCast(transform.position + celingCheckOffsett, celingCheckSize, 0, Vector2.up, 0, celingMask);
 
         // om hit har en transform skickar den true 
         if (hit.transform != null)

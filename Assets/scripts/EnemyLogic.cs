@@ -24,7 +24,7 @@ public class EnemyLogic : MonoBehaviour
     float spotDistance = 5;
 
     [SerializeField]
-    Vector2 patrolArea; // x = högra area slut, y = vänstra area slut
+    Vector2 patrolArea; // x = vänster area slut, y = höger area slut
 
     Vector2 patrolPoint;
 
@@ -43,6 +43,10 @@ public class EnemyLogic : MonoBehaviour
         {
             status = 2;
         }
+        else
+        {
+            status = 0;
+        }
 
         switch (status)
         {
@@ -60,8 +64,6 @@ public class EnemyLogic : MonoBehaviour
 
     void Passive()
     {
-        //print(Vector2.Distance(patrolPoint, transform.position));
-
         // om det inte finns en patrolPoint skapar den en
         if (patrolPoint == new Vector2(0, 0))
         {
@@ -80,6 +82,7 @@ public class EnemyLogic : MonoBehaviour
                 patrolWaitTimer += Time.deltaTime;
             }
         }
+
         // kallar på funktionen för att gå mot patrolpointen
         MoveTowardsTarget(patrolPoint, speed);
     }
@@ -90,18 +93,20 @@ public class EnemyLogic : MonoBehaviour
 
         print("skapar en ny patrol point");
 
-        float leftArea = Mathf.Abs(area.y - transform.position.x);
-        float rightArea = Mathf.Abs(area.x - transform.position.x);
+        // räknar ut hur avståndet till slutet av patrol areaen
+        float leftArea = Mathf.Abs(area.x - transform.position.x);
+        float rightArea = Mathf.Abs(area.y - transform.position.x);
 
         Vector2 pos = new Vector2(0, 0);
 
+        // väljer en random punkt på den sidan som är störst
         if (rightArea > leftArea)
         {
-            pos = new Vector2(Random.Range(transform.position.x, area.x), transform.position.y);
+            pos = new Vector2(Random.Range(transform.position.x, area.y), transform.position.y);
         }
         else
         {
-            pos = new Vector2(Random.Range(transform.position.x, area.y), transform.position.y);
+            pos = new Vector2(Random.Range(transform.position.x, area.x), transform.position.y);
         }
         
         return pos;
@@ -123,12 +128,12 @@ public class EnemyLogic : MonoBehaviour
 
     void Searching()
     {
-
+        status = 0;
     }
 
     void Chasing()
     {
-        print("i attacking you");
+        //print("i attacking you");
     }
 
     public bool CanSee()
@@ -162,8 +167,8 @@ public class EnemyLogic : MonoBehaviour
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(new Vector3(patrolArea.x, transform.position.y + 3, 0), new Vector3(patrolArea.x, transform.position.y - 3, 0));
         Gizmos.DrawLine(new Vector3(patrolArea.y, transform.position.y + 3, 0), new Vector3(patrolArea.y, transform.position.y - 3, 0));
+        Gizmos.DrawLine(new Vector3(patrolArea.x, transform.position.y + 3, 0), new Vector3(patrolArea.x, transform.position.y - 3, 0));
 
         /*Gizmos.color = Color.green;
         Gizmos.DrawLine(transform.position, new Vector2(player.position.x, player.position.y + (player.localScale.y / 2)));
