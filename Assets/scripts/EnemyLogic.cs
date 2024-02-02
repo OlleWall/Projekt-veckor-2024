@@ -23,7 +23,7 @@ public class EnemyLogic : MonoBehaviour
     [SerializeField, Range(0, 20)]
     float spotDistance = 5;
 
-    bool randomPatrolPoints = false;
+    bool simplePatrol = false;
 
     [SerializeField]
     Vector2 patrolArea; // x = vänster area slut, y = höger area slut
@@ -91,26 +91,30 @@ public class EnemyLogic : MonoBehaviour
 
     Vector2 MakePatrolPoint(Vector2 area)
     {
-        // ta fram en random distans att gå sen randomly gå den distansen åt höger eller vänster
-
-        //print("skapar en ny patrol point");
+        // skapar en temp pos variabel för att returna
+        Vector2 pos = new Vector2(0, 0);
 
         // räknar ut hur avståndet till slutet av patrol areaen
         float leftArea = Mathf.Abs(area.x - transform.position.x);
         float rightArea = Mathf.Abs(area.y - transform.position.x);
 
-        Vector2 pos = new Vector2(0, 0);
-
         // väljer en random punkt på den sidan som är störst
         if (rightArea > leftArea)
         {
-            pos = new Vector2(Random.Range(transform.position.x, area.y), transform.position.y);
+            if (simplePatrol)
+            {
+
+            }
+            else
+            {
+                pos = new Vector2(Random.Range(transform.position.x, area.y), transform.position.y);
+            }
         }
         else
         {
             pos = new Vector2(Random.Range(transform.position.x, area.x), transform.position.y);
         }
-        
+
         return pos;
     }
 

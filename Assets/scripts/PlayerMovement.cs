@@ -30,6 +30,8 @@ public class PlayerMovement : MonoBehaviour
 
     float coyoteTimer; // själva variabeln som räknar upp
 
+    public int teddyBears;
+
     bool canJump; // om man kan hoppa
 
     BoxCollider2D crouchCollider; // collidern som ska disableas när man crouchar
