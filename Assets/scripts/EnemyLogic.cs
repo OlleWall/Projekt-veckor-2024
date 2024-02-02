@@ -103,7 +103,7 @@ public class EnemyLogic : MonoBehaviour
         {
             if (simplePatrol)
             {
-
+                pos = new Vector2(patrolArea.y, transform.position.y);
             }
             else
             {
@@ -112,7 +112,14 @@ public class EnemyLogic : MonoBehaviour
         }
         else
         {
-            pos = new Vector2(Random.Range(transform.position.x, area.x), transform.position.y);
+            if (simplePatrol)
+            {
+                pos = new Vector2(patrolArea.y, transform.position.y);
+            }
+            else
+            {
+                pos = new Vector2(Random.Range(transform.position.x, area.x), transform.position.y);
+            }   
         }
 
         return pos;
