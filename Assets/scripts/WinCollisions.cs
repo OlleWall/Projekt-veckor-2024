@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class WinCollisions : MonoBehaviour
 {
-
+    public int TeddyBear;
+   
     private void Start()
     {
 
