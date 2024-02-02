@@ -33,6 +33,9 @@ public class EnemyLogic : MonoBehaviour
 
     float searchTimer;
 
+    [SerializeField]
+    float searchArea;
+
     Vector2 lastKnowLocation;
 
     [SerializeField]
@@ -80,17 +83,20 @@ public class EnemyLogic : MonoBehaviour
 
     void Passive()
     {
+        // skapar en temp area och räknar ut avståndet till slutet av patrol areaen
+        Vector2 tempPatrolArea = new Vector2(Mathf.Abs(patrolArea.x - transform.position.x), Mathf.Abs(patrolArea.y - transform.position.x));
+
         // om det inte finns en patrolPoint skapar den en
         if (patrolPoint == new Vector2(0, 0))
         {
-            patrolPoint = MakePatrolPoint(patrolArea);
+            patrolPoint = MakePatrolPoint(tempPatrolArea);
         }
         // om enemy är mindre än 0.75 units ifrån patrolPoint och timern har gåt ut ska den skapa en ny
         else if (Vector2.Distance(patrolPoint, transform.position) < 0.75f)
         {
             if (patrolWaitTimer > patrolWaitTime)
             {
-                patrolPoint = MakePatrolPoint(patrolArea);
+                patrolPoint = MakePatrolPoint(tempPatrolArea);
                 patrolWaitTimer = 0;
             }
             else
@@ -108,9 +114,8 @@ public class EnemyLogic : MonoBehaviour
         // skapar en temp pos variabel för att returna
         Vector2 pos = new Vector2(0, 0);
 
-        // räknar ut hur avståndet till slutet av patrol areaen
-        float leftArea = Mathf.Abs(area.x - transform.position.x);
-        float rightArea = Mathf.Abs(area.y - transform.position.x);
+        float leftArea = area.x;
+        float rightArea = area.y;
 
         // väljer en random punkt på den sidan som är störst
         if (rightArea > leftArea)
@@ -155,9 +160,11 @@ public class EnemyLogic : MonoBehaviour
 
     void Searching()
     {
-
-
         searchTimer += Time.deltaTime;
+
+        MakePatrolPoint(new Vector2(lastKnowLocation.x - searchArea, lastKnowLocation.x + searchArea));
+
+
 
         if (searchTime < searchTimer)
         {
