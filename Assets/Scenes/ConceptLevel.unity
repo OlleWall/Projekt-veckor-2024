@@ -855,6 +855,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LadderSprite
       objectReference: {fileID: 0}
+    - target: {fileID: 4046811982537420789, guid: 6ccc8388412bbef4aa5563fd816d1dd8, type: 3}
+      propertyPath: m_TagString
+      value: Ladder
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ccc8388412bbef4aa5563fd816d1dd8, type: 3}
 --- !u!4 &552597536 stripped

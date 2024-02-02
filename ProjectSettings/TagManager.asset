@@ -9,6 +9,7 @@ TagManager:
   - UpperClassWin
   - Ladder
   - Door
+  - Hider
   layers:
   - Default
   - TransparentFX

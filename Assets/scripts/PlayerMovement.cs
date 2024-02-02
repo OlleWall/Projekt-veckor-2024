@@ -40,6 +40,8 @@ public class PlayerMovement : MonoBehaviour
 
     public bool crouching = false;
 
+    public bool hiding = false;
+
     [SerializeField]
     LayerMask groundMask; // layermasken för marken
 
@@ -54,6 +56,8 @@ public class PlayerMovement : MonoBehaviour
     public int facingRight; // 1 = kollar höger -1 = vänster
 
     float gravity; // vanliga gravitationen
+
+    SpriteRenderer[] playerSpriteRenderers;
 
     public List<int> inventory;
 
@@ -74,9 +78,8 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField]
     Vector2 interactCheckSize = new Vector2(1, 1.9f);
-
+    
     //CameraFollow cameraScript;
-
     void Start()
     {
         // hämtar rigidbody componenten
@@ -88,16 +91,17 @@ public class PlayerMovement : MonoBehaviour
         // hämtar boxcollidern som då är den övre
         crouchCollider = GetComponent<BoxCollider2D>();
 
-        // reffererar till cameraFollow scriptet på cameran
-        //cameraScript = GetComponent<CameraFollow>();
-
         // sätter liveSpeed till den vanliga hastigheten
         liveSpeed = speed;
+
+        playerSpriteRenderers = GetComponentsInChildren<SpriteRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        GameObject interactedObject = InteractCheck();
+
         #region Movement och klättring
         // uppdaterar inputX med inputen i horizontella riktningen
         inputX = Input.GetAxisRaw("Horizontal");
@@ -112,10 +116,8 @@ public class PlayerMovement : MonoBehaviour
             facingRight = -1;
         }
 
-        GameObject interactedObject = InteractCheck();
-
         // bara när man inte klättrar ska man kunna göra dessa saker
-        if (!climbing)
+        if (!climbing && !hiding)
         {
             rb2D.gravityScale = gravity;
 
@@ -241,8 +243,28 @@ public class PlayerMovement : MonoBehaviour
         }
         #endregion
 
+        #region Hiding
+        if (hiding)
+        {
+            rb2D.Sleep();
+            foreach (SpriteRenderer spriteRenderer in playerSpriteRenderers)
+            {
+                spriteRenderer.enabled = false;
+            }
+        }
+        else
+        {
+            rb2D.WakeUp();
+            foreach (SpriteRenderer spriteRenderer in playerSpriteRenderers)
+            {
+                spriteRenderer.enabled = true;
+            }
+        }
+        #endregion
+
         if (interactedObject != null && Input.GetKeyDown(KeyCode.E))
         {
+            print("interacted with a " + interactedObject.name);
             // om objectets tag är ladder ska den sluta klättra om den klättrar och börja om den inte
             if (interactedObject.tag == "Ladder")
             {
@@ -250,10 +272,11 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (interactedObject.tag == "Door")
             {
-                foreach (int key in inventory)
-                {
-                    interactedObject.GetComponent<DoorLogic>().Open(inventory);
-                }
+                interactedObject.GetComponent<DoorLogic>().Open(inventory);
+            }
+            else if (interactedObject.tag == "Hider")
+            {
+                hiding = !hiding;
             }
         }
     }
@@ -305,15 +328,6 @@ public class PlayerMovement : MonoBehaviour
 
         // annars skickar den null
         return null;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        //när spelaren nuddar ett objekt med taggen CameraGraber så säger den åt kammeran att röra sig åt höger
-        if (collision.gameObject.tag == "CamerGraber")
-        {
-            //cameraScript.GrabCamera();
-        }
     }
 
     private void OnDrawGizmos()
