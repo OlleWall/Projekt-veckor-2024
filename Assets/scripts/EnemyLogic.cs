@@ -12,10 +12,15 @@ public class EnemyLogic : MonoBehaviour
     [SerializeField, Range(0, 5)]
     float speed = 2.5f;
 
+    [SerializeField]
+    bool simplePatrol = false;
+
     [SerializeField, Range(0, 5)]
     float patrolWaitTime = 2;
 
     float patrolWaitTimer;
+
+    PlayerMovement playerScript;
 
     [SerializeField]
     LayerMask mask;
@@ -23,14 +28,19 @@ public class EnemyLogic : MonoBehaviour
     [SerializeField, Range(0, 20)]
     float spotDistance = 5;
 
-    bool simplePatrol = false;
+    [SerializeField]
+    float searchTime = 15;
+
+    float searchTimer;
+
+    Vector2 lastKnowLocation;
 
     [SerializeField]
     Vector2 patrolArea; // x = vänster area slut, y = höger area slut
+    [SerializeField]
+    Vector2 outerArea; // x = vänster area slut, y = höger area slut
 
     Vector2 patrolPoint;
-
-    PlayerMovement playerScript;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +54,10 @@ public class EnemyLogic : MonoBehaviour
         if (CanSee())
         {
             status = 2;
+        }
+        else if (status == 2)
+        {
+            status = 1;
         }
         else
         {
@@ -114,7 +128,7 @@ public class EnemyLogic : MonoBehaviour
         {
             if (simplePatrol)
             {
-                pos = new Vector2(patrolArea.y, transform.position.y);
+                pos = new Vector2(patrolArea.x, transform.position.y);
             }
             else
             {
@@ -130,23 +144,31 @@ public class EnemyLogic : MonoBehaviour
         // om targets position på x är större ska den röra sig åt höger
         if (target.x > transform.position.x)
         {
-            transform.position += new Vector3(speed * Time.deltaTime, 0, 0);
+            transform.position += new Vector3(localSpeed * Time.deltaTime, 0, 0);
         }
         // om targets position på x är mindre ska den röra sig åt vänster
         else if (target.x < transform.position.x)
         {
-            transform.position -= new Vector3(speed * Time.deltaTime, 0, 0);
+            transform.position -= new Vector3(localSpeed * Time.deltaTime, 0, 0);
         }
     }
 
     void Searching()
     {
-        status = 0;
+
+
+        searchTimer += Time.deltaTime;
+
+        if (searchTime < searchTimer)
+        {
+            status = 0;
+            searchTimer = 0;
+        }
     }
 
     void Chasing()
     {
-        //print("i attacking you");
+        
     }
 
     public bool CanSee()
@@ -185,8 +207,8 @@ public class EnemyLogic : MonoBehaviour
         Gizmos.DrawLine(new Vector3(patrolArea.y, transform.position.y + 3, 0), new Vector3(patrolArea.y, transform.position.y - 3, 0));
         Gizmos.DrawLine(new Vector3(patrolArea.x, transform.position.y + 3, 0), new Vector3(patrolArea.x, transform.position.y - 3, 0));
 
-        /*Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.position, new Vector2(player.position.x, player.position.y + (player.localScale.y / 2)));
-        Gizmos.DrawLine(transform.position, new Vector2(player.position.x, player.position.y - (player.localScale.y / 2)));*/
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(new Vector3(outerArea.y, transform.position.y + 3, 0), new Vector3(outerArea.y, transform.position.y - 3, 0));
+        Gizmos.DrawLine(new Vector3(outerArea.x, transform.position.y + 3, 0), new Vector3(outerArea.x, transform.position.y - 3, 0));
     }
 }

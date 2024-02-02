@@ -7,7 +7,7 @@ public class GrabbableLogic : MonoBehaviour
 {
     public PlayerMovement playerInventory;
 
-    public void Start()
+    void Start()
     {
         playerInventory = FindObjectOfType<PlayerMovement>();
     }
