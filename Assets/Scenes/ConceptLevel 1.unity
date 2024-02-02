@@ -183,12 +183,24 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1609531137318040024}
     - target: {fileID: 4726973512606891531, guid: f130c7c10b0b56841bd63355bbe05619, type: 3}
+      propertyPath: outerArea.x
+      value: 3.83
+      objectReference: {fileID: 0}
+    - target: {fileID: 4726973512606891531, guid: f130c7c10b0b56841bd63355bbe05619, type: 3}
+      propertyPath: outerArea.y
+      value: 31.21
+      objectReference: {fileID: 0}
+    - target: {fileID: 4726973512606891531, guid: f130c7c10b0b56841bd63355bbe05619, type: 3}
       propertyPath: patrolArea.x
       value: 8.7
       objectReference: {fileID: 0}
     - target: {fileID: 4726973512606891531, guid: f130c7c10b0b56841bd63355bbe05619, type: 3}
       propertyPath: patrolArea.y
       value: 28.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 4726973512606891531, guid: f130c7c10b0b56841bd63355bbe05619, type: 3}
+      propertyPath: simplePatrol
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f130c7c10b0b56841bd63355bbe05619, type: 3}
