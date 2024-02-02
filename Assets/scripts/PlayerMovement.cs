@@ -42,6 +42,10 @@ public class PlayerMovement : MonoBehaviour
 
     public bool hiding = false;
 
+    string frontSortingLayer = "PlayerLayer"; // Sorting layer for in front of the wall. Marcus
+
+    string behindSortingLayer = "PlayerHidingLayer"; // Sorting layer for behind the wall. Marcus
+
     [SerializeField]
     LayerMask groundMask; // layermasken för marken
 
@@ -244,20 +248,21 @@ public class PlayerMovement : MonoBehaviour
         #endregion
 
         #region Hiding
+        // Update the sorting layer accordingly. Marcus
         if (hiding)
         {
-            rb2D.Sleep();
+            rb2D.Sleep(); // stänger av rigidbodyn när man gömmer sig
             foreach (SpriteRenderer spriteRenderer in playerSpriteRenderers)
             {
-                spriteRenderer.enabled = false;
+                spriteRenderer.sortingLayerName = behindSortingLayer; 
             }
         }
         else
         {
-            rb2D.WakeUp();
+            rb2D.WakeUp(); // sätter igång rigidbodyn när man inte gömmer sig
             foreach (SpriteRenderer spriteRenderer in playerSpriteRenderers)
             {
-                spriteRenderer.enabled = true;
+                spriteRenderer.sortingLayerName = frontSortingLayer;
             }
         }
         #endregion

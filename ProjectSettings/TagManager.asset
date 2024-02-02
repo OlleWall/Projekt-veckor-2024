@@ -50,15 +50,15 @@ TagManager:
   - name: background
     uniqueID: 3423947287
     locked: 0
-  - name: PlayerBackground
-    uniqueID: 305986069
+  - name: Ground
+    uniqueID: 3768656759
     locked: 0
-  - name: platforms
+  - name: Platforms
     uniqueID: 3440693891
     locked: 0
-  - name: player
-    uniqueID: 1656524701
+  - name: PlayerHidingLayer
+    uniqueID: 305986069
     locked: 0
-  - name: PlayerForeground
-    uniqueID: 2976510495
+  - name: PlayerLayer
+    uniqueID: 1656524701
     locked: 0

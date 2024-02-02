@@ -23,6 +23,8 @@ public class EnemyLogic : MonoBehaviour
     [SerializeField, Range(0, 20)]
     float spotDistance = 5;
 
+    bool randomPatrolPoints = false;
+
     [SerializeField]
     Vector2 patrolArea; // x = vänster area slut, y = höger area slut
 
@@ -150,8 +152,10 @@ public class EnemyLogic : MonoBehaviour
         Debug.DrawRay(transform.position, -1 * new Vector2(transform.position.x - top.x, transform.position.y - top.y), Color.red);
         Debug.DrawRay(transform.position, -1 * new Vector2(transform.position.x - bottom.x, transform.position.y - bottom.y), Color.red);
 
-        foreach (RaycastHit2D x in hits)
+        for (int i = 0; i < hits.Length; i++)
         {
+            RaycastHit2D x = hits[i];
+
             if (x.transform != null)
             {
                 if (x.transform.gameObject.tag == "Player" && x.distance <= spotDistance)
