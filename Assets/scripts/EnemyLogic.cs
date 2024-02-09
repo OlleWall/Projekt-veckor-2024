@@ -12,6 +12,9 @@ public class EnemyLogic : MonoBehaviour
     [SerializeField, Range(0, 5)]
     float speed = 2.5f;
 
+    [SerializeField, Range(0, 10)]
+    float runSpeed = 5f;
+
     [SerializeField]
     bool simplePatrol = false;
 
@@ -19,7 +22,7 @@ public class EnemyLogic : MonoBehaviour
     float patrolWaitTime = 2;
 
     float patrolWaitTimer;
-
+    
     PlayerMovement playerScript;
 
     [SerializeField]
@@ -43,12 +46,14 @@ public class EnemyLogic : MonoBehaviour
     [SerializeField]
     Vector2 outerArea; // x = vänster area slut, y = höger area slut
 
+    Vector2 searchPoint;
+
     Vector2 patrolPoint;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerScript = GetComponent<PlayerMovement>();
+        playerScript = FindObjectOfType<PlayerMovement>();
     }
 
     // Update is called once per frame
@@ -83,6 +88,7 @@ public class EnemyLogic : MonoBehaviour
 
     void Passive()
     {
+        print("im patroling");
         // skapar en temp area och räknar ut avståndet till slutet av patrol areaen
         Vector2 tempPatrolArea = new Vector2(Mathf.Abs(patrolArea.x - transform.position.x), Mathf.Abs(patrolArea.y - transform.position.x));
 
@@ -160,11 +166,13 @@ public class EnemyLogic : MonoBehaviour
 
     void Searching()
     {
+        print("im looking for you");
         searchTimer += Time.deltaTime;
 
-        MakePatrolPoint(new Vector2(lastKnowLocation.x - searchArea, lastKnowLocation.x + searchArea));
-
-
+        if (searchPoint == new Vector2(0, 0) || Vector2.Distance(searchPoint, transform.position) < 0.75f)
+        {
+            searchPoint = MakePatrolPoint(new Vector2(lastKnowLocation.x - searchArea, lastKnowLocation.x + searchArea));
+        }
 
         if (searchTime < searchTimer)
         {
@@ -175,7 +183,13 @@ public class EnemyLogic : MonoBehaviour
 
     void Chasing()
     {
-        
+        print("im chasing you");
+        MoveTowardsTarget(player.position, runSpeed);
+
+        if (!CanSee())
+        {
+            lastKnowLocation = player.position;
+        }
     }
 
     public bool CanSee()
@@ -198,8 +212,9 @@ public class EnemyLogic : MonoBehaviour
 
             if (x.transform != null)
             {
-                if (x.transform.gameObject.tag == "Player" && x.distance <= spotDistance)
+                if (x.transform.gameObject.tag == "Player" && x.distance <= spotDistance && !playerScript.hiding)
                 {
+                    print("i can see you");
                     return true;
                 }
             }           
@@ -217,5 +232,8 @@ public class EnemyLogic : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawLine(new Vector3(outerArea.y, transform.position.y + 3, 0), new Vector3(outerArea.y, transform.position.y - 3, 0));
         Gizmos.DrawLine(new Vector3(outerArea.x, transform.position.y + 3, 0), new Vector3(outerArea.x, transform.position.y - 3, 0));
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(lastKnowLocation, new Vector3(1, 2, 1));
     }
 }
