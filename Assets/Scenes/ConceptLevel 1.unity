@@ -183,6 +183,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1609531137318040024}
     - target: {fileID: 4726973512606891531, guid: f130c7c10b0b56841bd63355bbe05619, type: 3}
+      propertyPath: runSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4726973512606891531, guid: f130c7c10b0b56841bd63355bbe05619, type: 3}
       propertyPath: outerArea.x
       value: 3.83
       objectReference: {fileID: 0}
@@ -2034,7 +2038,7 @@ GameObject:
   - component: {fileID: 1609531137318040028}
   m_Layer: 7
   m_Name: player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
