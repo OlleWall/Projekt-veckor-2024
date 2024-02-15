@@ -34,10 +34,10 @@ public class TeddyBear : GrabbableLogic
         // Declares and initializeces a counter variable
         int counter = 0;
 
-        // Used for the counter variable in a loop
+       
         for (int i = 0; i < 5; i++)
         {
-            // Increment the counter
+            
             counter++;
 
             // Display the current value of the counter
